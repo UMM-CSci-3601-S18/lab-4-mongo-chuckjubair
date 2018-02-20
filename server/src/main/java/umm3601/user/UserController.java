@@ -94,7 +94,8 @@ public class UserController {
     }
 
 
-    /**Helper method which appends received user information to the to-be added document
+    /**Helper method which appends receive[![Build Status](https://travis-ci.org/UMM-CSci-3601/3601-lab4_mongo.svg?branch=master)](https://travis-ci.org/UMM-CSci-3601/3601-lab4_mongo)
+d user information to the to-be added document
     /**
      *
      * @param name
