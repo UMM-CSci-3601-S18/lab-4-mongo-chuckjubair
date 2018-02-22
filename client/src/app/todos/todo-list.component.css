@@ -1,4 +1,4 @@
-#addUser {
+#addTodo {
     flex-basis: 100%;
     max-width: 100%;
 }
@@ -11,4 +11,3 @@
 #list-title {
     padding-right: 14px;
 }
-

@@ -1,7 +1,9 @@
-<div *ngIf="user" class="user">
+<div *ngIf="todo" class="todo">
     <ul>
-        <li>Name: {{ user.name }}</li>
-        <li>Age: {{ user.age }}</li>
-        <li>Company: {{ user.company }}</li>
+        <li>Owner: {{ todo.owner }}</li>
+        <li>Body: {{ todo.body }}</li>
+        <li>Status: {{ todo.status }}</li>
+        <li>Category: {{ todo.category }}</li>
+        <li>ID: {{ todo._id }}</li>
     </ul>
 </div>
