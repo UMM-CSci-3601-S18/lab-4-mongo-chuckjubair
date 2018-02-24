@@ -2,38 +2,38 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
 import {TestBed} from '@angular/core/testing';
 import {HttpClient} from '@angular/common/http';
 
-import {User} from './todo';
-import {UserListService} from './todo-list.service';
+import {Todo} from './todo';
+import {TodoListService} from './todo-list.service';
 
-describe('User list service: ', () => {
-    // A small collection of test users
-    const testUsers: User[] = [
+describe('Todo list service: ', () => {
+    // A small collection of test todos
+    const testTodos: Todo[] = [
         {
-            _id: 'chris_id',
-            name: 'Chris',
-            age: 25,
-            company: 'UMM',
-            email: 'chris@this.that'
+            "_id": "58895985a22c04e761776d54",
+            "owner": "Blanche",
+            "status": false,
+            "body": "In sunt ex non tempor cillum commodo amet incididunt anim qui commodo quis. Cillum non labore ex sint esse.",
+            "category": "software design"
         },
         {
-            _id: 'pat_id',
-            name: 'Pat',
-            age: 37,
-            company: 'IBM',
-            email: 'pat@something.com'
+            "_id": "58895985c1849992336c219b",
+            "owner": "Fry",
+            "status": false,
+            "body": "Ipsum esse est ullamco magna tempor anim laborum non officia deserunt veniam commodo. Aute minim incididunt ex commodo.",
+            "category": "video games"
         },
         {
-            _id: 'jamie_id',
-            name: 'Jamie',
-            age: 37,
-            company: 'Frogs, Inc.',
-            email: 'jamie@frogs.com'
+            "_id": "58895985ae3b752b124e7663",
+            "owner": "Fry",
+            "status": true,
+            "body": "Ullamco irure laborum magna dolor non. Anim occaecat adipisicing cillum eu magna in.",
+            "category": "homework"
         }
     ];
-    const mUsers: User[] = testUsers.filter(user =>
-        user.company.toLowerCase().indexOf("m") !== -1
+    const mTodos: Todo[] = testTodos.filter(todo =>
+        todo.owner.toLowerCase().indexOf("a") !== -1
     );
-    let userListService: UserListService;
+    let todoListService: TodoListService;
     // These are used to mock the HTTP requests so that we (a) don't have to
     // have the server running and (b) we can check exactly which HTTP
     // requests were made to ensure that we're making the correct requests.
@@ -49,7 +49,7 @@ describe('User list service: ', () => {
         httpTestingController = TestBed.get(HttpTestingController);
         // Construct an instance of the service with the mock
         // HTTP client.
-        userListService = new UserListService(httpClient);
+        todoListService = new TodoListService(httpClient);
     });
 
     afterEach(() => {
@@ -57,47 +57,47 @@ describe('User list service: ', () => {
         httpTestingController.verify();
     });
 
-    it('getUsers() calls api/users', () => {
-        // Assert that the users we get from this call to getUsers()
-        // should be our set of test users. Because we're subscribing
-        // to the result of getUsers(), this won't actually get
+    it('getTodos() calls api/todos', () => {
+        // Assert that the todos we get from this call to getTodos()
+        // should be our set of test todos. Because we're subscribing
+        // to the result of getTodos(), this won't actually get
         // checked until the mocked HTTP request "returns" a response.
-        // This happens when we call req.flush(testUsers) a few lines
+        // This happens when we call req.flush(testTodos) a few lines
         // down.
-        userListService.getUsers().subscribe(
-            users => expect(users).toBe(testUsers)
+        todoListService.getTodos().subscribe(
+            todos => expect(todos).toBe(testTodos)
         );
 
         // Specify that (exactly) one request will be made to the specified URL.
-        const req = httpTestingController.expectOne(userListService.baseUrl);
+        const req = httpTestingController.expectOne(todoListService.baseUrl);
         // Check that the request made to that URL was a GET request.
         expect(req.request.method).toEqual('GET');
         // Specify the content of the response to that request. This
         // triggers the subscribe above, which leads to that check
         // actually being performed.
-        req.flush(testUsers);
+        req.flush(testTodos);
     });
 
-    it('getUsers(userCompany) adds appropriate param string to called URL', () => {
-        userListService.getUsers("m").subscribe(
-            users => expect(users).toEqual(mUsers)
+    it('getTodos(todoOwner) adds appropriate param string to called URL', () => {
+        todoListService.getTodos("a").subscribe(
+            todos => expect(todos).toEqual(mTodos)
         );
 
-        const req = httpTestingController.expectOne(userListService.baseUrl + '?company=m&');
+        const req = httpTestingController.expectOne(todoListService.baseUrl + '?owner=a&');
         expect(req.request.method).toEqual('GET');
-        req.flush(mUsers);
+        req.flush(mTodos);
     });
 
-    it('getUserById() calls api/users/id', () => {
-        const targetUser: User = testUsers[1];
-        const targetId: string = targetUser._id;
-        userListService.getUserById(targetId).subscribe(
-            user => expect(user).toBe(targetUser)
+    it('getTodoById() calls api/todos/id', () => {
+        const targetTodo: Todo = testTodos[1];
+        const targetId: string = targetTodo._id;
+        todoListService.getTodoById(targetId).subscribe(
+            todo => expect(todo).toBe(targetTodo)
         );
 
-        const expectedUrl: string = userListService.baseUrl + '/' + targetId;
+        const expectedUrl: string = todoListService.baseUrl + '/' + targetId;
         const req = httpTestingController.expectOne(expectedUrl);
         expect(req.request.method).toEqual('GET');
-        req.flush(targetUser);
+        req.flush(targetTodo);
     });
 });

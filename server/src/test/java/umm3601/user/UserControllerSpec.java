@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 import static org.junit.Assert.*;
 
 /**
- * JUnit tests for the UserController.
+ * JUnit tests for the TodoController.
  *
  * Created by mcphee on 22/2/17.
  */
@@ -134,7 +134,7 @@ public class UserControllerSpec
 
     }
 
-    @Test
+    /*@Test
     public void addUserTest(){
         String newId = userController.addNewUser("Brian",22,"umm", "brian@yahoo.com");
 
@@ -150,12 +150,12 @@ public class UserControllerSpec
             .sorted()
             .collect(Collectors.toList());
         assertEquals("Should return name of new user", "Brian", name.get(0));
-    }
+    }*/
 
     @Test
     public void getUserByCompany(){
         Map<String, String[]> argMap = new HashMap<>();
-        //Mongo in UserController is doing a regex search so can just take a Java Reg. Expression
+        //Mongo in TodoController is doing a regex search so can just take a Java Reg. Expression
         //This will search the company starting with an I or an F
         argMap.put("company", new String[] { "[I,F]" });
         String jsonResult = userController.getUsers(argMap);

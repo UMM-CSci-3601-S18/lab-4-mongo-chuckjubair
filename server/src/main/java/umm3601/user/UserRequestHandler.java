@@ -70,7 +70,7 @@ public class UserRequestHandler {
      * @param res the HTTP response
      * @return a boolean as whether the user was added successfully or not
      */
-    public String addNewUser(Request req, Response res)
+    public Boolean addNewUser(Request req, Response res)
     {
 
         res.type("application/json");
@@ -89,7 +89,7 @@ public class UserRequestHandler {
                     String email = dbO.getString("email");
 
                     System.err.println("Adding new user [name=" + name + ", age=" + age + " company=" + company + " email=" + email + ']');
-                    return userController.addNewUser(name, age, company, email).toString();
+                    return userController.addNewUser(name, age, company, email);
                 }
                 catch(NullPointerException e)
                 {

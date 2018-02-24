@@ -3,72 +3,72 @@ import {HttpClient} from '@angular/common/http';
 
 import {Observable} from "rxjs";
 
-import {User} from './todo';
+import {Todo} from './todo';
 import {environment} from "../../environments/environment";
 
 
 @Injectable()
-export class UserListService {
-    readonly baseUrl: string = environment.API_URL + "users";
-    private userUrl: string = this.baseUrl;
+export class TodoListService {
+    readonly baseUrl: string = environment.API_URL + "todos";
+    private todoUrl: string = this.baseUrl;
 
     constructor(private http: HttpClient) {
     }
 
-    getUsers(userCompany?: string): Observable<User[]> {
-        this.filterByCompany(userCompany);
-        return this.http.get<User[]>(this.userUrl);
+    getTodos(todoOwner?: string): Observable<Todo[]> {
+        this.filterByOwner(todoOwner);
+        return this.http.get<Todo[]>(this.todoUrl);
     }
 
-    getUserById(id: string): Observable<User> {
-        return this.http.get<User>(this.userUrl + "/" + id);
+    getTodoById(id: string): Observable<Todo> {
+        return this.http.get<Todo>(this.todoUrl + "/" + id);
     }
 
     /*
     //This method looks lovely and is more compact, but it does not clear previous searches appropriately.
     //It might be worth updating it, but it is currently commented out since it is not used (to make that clear)
-    getUsersByCompany(userCompany?: string): Observable<User> {
-        this.userUrl = this.userUrl + (!(userCompany == null || userCompany == "") ? "?company=" + userCompany : "");
-        console.log("The url is: " + this.userUrl);
-        return this.http.request(this.userUrl).map(res => res.json());
+    getTodosByOwner(todoOwner?: string): Observable<Todo> {
+        this.todoUrl = this.todoUrl + (!(todoOwner == null || todoOwner == "") ? "?owner=" + todoOwner : "");
+        console.log("The url is: " + this.todoUrl);
+        return this.http.request(this.todoUrl).map(res => res.json());
     }
     */
 
-    filterByCompany(userCompany?: string): void {
-        if(!(userCompany == null || userCompany == "")){
-            if (this.userUrl.indexOf('company=') !== -1){
-                //there was a previous search by company that we need to clear
-                let start = this.userUrl.indexOf('company=');
-                let end = this.userUrl.indexOf('&', start);
-                this.userUrl = this.userUrl.substring(0, start-1) + this.userUrl.substring(end+1);
+    filterByOwner(todoOwner?: string): void {
+        if(!(todoOwner == null || todoOwner == "")){
+            if (this.todoUrl.indexOf('owner=') !== -1){
+                //there was a previous search by owner that we need to clear
+                let start = this.todoUrl.indexOf('owner=');
+                let end = this.todoUrl.indexOf('&', start);
+                this.todoUrl = this.todoUrl.substring(0, start-1) + this.todoUrl.substring(end+1);
             }
-            if (this.userUrl.indexOf('&') !== -1) {
+            if (this.todoUrl.indexOf('&') !== -1) {
                 //there was already some information passed in this url
-                this.userUrl += 'company=' + userCompany + '&';
+                this.todoUrl += 'owner=' + todoOwner + '&';
             }
             else {
                 //this was the first bit of information to pass in the url
-                this.userUrl += "?company=" + userCompany + "&";
+                this.todoUrl += "?owner=" + todoOwner + "&";
             }
         }
         else {
             //there was nothing in the box to put onto the URL... reset
-            if (this.userUrl.indexOf('company=') !== -1){
-                let start = this.userUrl.indexOf('company=');
-                let end = this.userUrl.indexOf('&', start);
-                if (this.userUrl.substring(start-1, start) === '?'){
+            if (this.todoUrl.indexOf('owner=') !== -1){
+                let start = this.todoUrl.indexOf('owner=');
+                let end = this.todoUrl.indexOf('&', start);
+                if (this.todoUrl.substring(start-1, start) === '?'){
                     start = start-1
                 }
-                this.userUrl = this.userUrl.substring(0, start) + this.userUrl.substring(end+1);
+                this.todoUrl = this.todoUrl.substring(0, start) + this.todoUrl.substring(end+1);
             }
         }
     }
 
-    addNewUser(name: string, age: number, company : string, email : string): Observable<Boolean> {
-        const body = {name:name, age:age, company:company, email:email};
-        console.log(body);
+    addNewTodo(owner : string, category: string, status: string, body : string, Id : string): Observable<Boolean> {
+        const bodyOfTodo = {owner:owner, status:status, body:body, category:category, Id:Id};
+        console.log(bodyOfTodo);
 
-        //Send post request to add a new user with the user data as the body with specified headers.
-        return this.http.post<Boolean>(this.userUrl + "/new", body);
+        //Send post request to add a new todo with the todo data as the body with specified headers.
+        return this.http.post<Boolean>(this.todoUrl + "/new", bodyOfTodo);
     }
 }

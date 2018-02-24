@@ -28,7 +28,7 @@ import static org.junit.Assert.*;
  * they test that code, and perhaps our understanding of it.
  *
  * To test "our" code we'd want the tests to confirm that
- * the behavior of methods in things like the UserController
+ * the behavior of methods in things like the TodoController
  * do the "right" thing.
  *
  * Created by mcphee on 20/2/17.

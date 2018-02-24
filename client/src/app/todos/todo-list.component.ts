@@ -1,38 +1,40 @@
 import {Component, OnInit} from '@angular/core';
-import {UserListService} from "./todo-list.service";
-import {User} from "./todo";
+import {TodoListService} from "./todo-list.service";
+import {Todo} from "./todo";
 import {Observable} from "rxjs";
 import {MatDialog} from '@angular/material';
-import {AddUserComponent} from "./add-todo.component"
+import {AddTodoComponent} from "./add-todo.component"
 
 @Component({
-    selector: 'user-list-component',
+    selector: 'todo-list-component',
     templateUrl: 'todo-list.component.html',
     styleUrls: ['./todo-list.component.css'],
 })
 
-export class UserListComponent implements OnInit {
+export class TodoListComponent implements OnInit {
     //These are public so that tests can reference them (.spec.ts)
-    public users: User[];
-    public filteredUsers: User[];
+    public todos: Todo[];
+    public filteredTodos: Todo[];
 
-    public userName : string;
-    public userAge : number;
-    public userCompany : string;
+    public todoOwner : string;
+    public todoStatus : string;
+    public todoCategory : string;
+    public todoBody : string;
+    public todoId : string;
 
     public loadReady: boolean = false;
 
-    //Inject the UserListService into this component.
+    //Inject the TodoListService into this component.
     //That's what happens in the following constructor.
     //panelOpenState: boolean = false;
     //We can call upon the service for interacting
     //with the server.
-    constructor(public userListService: UserListService, public dialog: MatDialog) {
+    constructor(public todoListService: TodoListService, public dialog: MatDialog) {
 
     }
 
     openDialog(): void {
-        let dialogRef = this.dialog.open(AddUserComponent, {
+        let dialogRef = this.dialog.open(AddTodoComponent, {
             width: '500px',
         });
 
@@ -42,59 +44,67 @@ export class UserListComponent implements OnInit {
     }
 
 
-    public filterUsers(searchName: string, searchAge: number): User[] {
+    public filterTodos(searchOwner: string, searchCategory: string, searchStatus: string, searchBody: string, searchId: string): Todo[] {
 
-        this.filteredUsers = this.users;
+        this.filteredTodos = this.todos;
 
-        //Filter by name
-        if (searchName != null) {
-            searchName = searchName.toLocaleLowerCase();
+        //Filter by owner
+        if (searchOwner != null) {
+            searchOwner = searchOwner.toLocaleLowerCase();
 
-            this.filteredUsers = this.filteredUsers.filter(user => {
-                return !searchName || user.name.toLowerCase().indexOf(searchName) !== -1;
+            this.filteredTodos = this.filteredTodos.filter(todo => {
+                return !searchOwner || todo.owner.toLowerCase().indexOf(searchOwner) !== -1;
             });
         }
 
-        //Filter by age
-        if (searchAge != null) {
-            this.filteredUsers = this.filteredUsers.filter(user => {
-                return !searchAge || user.age == searchAge;
+        //Filter by status
+        if (searchStatus != null) {
+            let status: boolean;
+
+            if (searchStatus === "complete" || searchStatus === "true") {
+                status = true;
+            } else if (searchStatus === "incomplete" || searchStatus === "false") {
+                status = false;
+            }
+
+            this.filteredTodos = this.filteredTodos.filter((todo: Todo) => {
+                return !searchStatus || (todo.status === Boolean(status));
             });
         }
 
-        return this.filteredUsers;
+        return this.filteredTodos;
     }
 
     /**
-     * Starts an asynchronous operation to update the users list
+     * Starts an asynchronous operation to update the todos list
      *
      */
-    refreshUsers(): Observable<User[]> {
-        //Get Users returns an Observable, basically a "promise" that
+    refreshTodos(): Observable<Todo[]> {
+        //Get Todos returns an Observable, basically a "promise" that
         //we will get the data from the server.
         //
         //Subscribe waits until the data is fully downloaded, then
         //performs an action on it (the first lambda)
 
-        let users : Observable<User[]> = this.userListService.getUsers();
-        users.subscribe(
-            users => {
-                this.users = users;
-                this.filterUsers(this.userName, this.userAge);
+        let todos : Observable<Todo[]> = this.todoListService.getTodos();
+        todos.subscribe(
+            todos => {
+                this.todos = todos;
+                this.filterTodos(this.todoOwner, this.todoCategory, this.todoStatus, this.todoBody, this.todoId);
             },
             err => {
                 console.log(err);
             });
-        return users;
+        return todos;
     }
 
 
     loadService(): void {
         this.loadReady = true;
-        this.userListService.getUsers(this.userCompany).subscribe(
-            users => {
-                this.users = users;
-                this.filteredUsers = this.users;
+        this.todoListService.getTodos(this.todoCategory).subscribe(
+            todos => {
+                this.todos = todos;
+                this.filteredTodos = this.todos;
             },
             err => {
                 console.log(err);
@@ -104,7 +114,7 @@ export class UserListComponent implements OnInit {
 
 
     ngOnInit(): void {
-        this.refreshUsers();
+        this.refreshTodos();
         this.loadService();
     }
 }
