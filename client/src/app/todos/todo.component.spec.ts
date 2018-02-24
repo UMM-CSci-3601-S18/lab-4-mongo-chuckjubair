@@ -57,7 +57,7 @@ describe("Todo component", () => {
     }));
 
     it("can retrieve Blanche ID", () => {
-        todoComponent.setId("58895985a22c04e761776d54");
+        todoComponent.setId("58af3a600343927e48e8720f");
         expect(todoComponent.todo).toBeDefined();
         expect(todoComponent.todo.owner).toBe("Blanche");
         expect(todoComponent.todo.category).toBe("software design");
