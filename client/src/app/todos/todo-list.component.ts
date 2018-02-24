@@ -81,6 +81,15 @@ export class TodoListComponent implements OnInit {
             });
         }
 
+        //Filter by phrase in body
+        if (searchBody != null) {
+            searchBody = searchBody.toLocaleLowerCase();
+
+            this.filteredTodos = this.filteredTodos.filter(todo => {
+                return !searchBody || todo.body.toLowerCase().indexOf(searchBody) !== -1;
+            });
+        }
+
         return this.filteredTodos;
     }
 
