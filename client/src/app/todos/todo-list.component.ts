@@ -57,6 +57,15 @@ export class TodoListComponent implements OnInit {
             });
         }
 
+        //Filter by category
+        if (searchCategory != null) {
+            searchCategory = searchCategory.toLocaleLowerCase();
+
+            this.filteredTodos = this.filteredTodos.filter(todo => {
+                return !searchCategory || todo.category.toLowerCase().indexOf(searchCategory) !== -1;
+            });
+        }
+
         //Filter by status
         if (searchStatus != null) {
             let status: boolean;
