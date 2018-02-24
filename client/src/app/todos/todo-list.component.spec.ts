@@ -94,6 +94,17 @@ describe("Todo list", () => {
             });
     });
 
+    it("todo list filters by phrase in body", () => {
+        expect(todoList.filteredTodos.length).toBe(3);
+        todoList.todoBody = "sunt";
+        let a : Observable<Todo[]> = todoList.refreshTodos();
+        a.do(x => Observable.of(x))
+            .subscribe(x =>
+            {
+                expect(todoList.filteredTodos.length).toBe(1);
+            });
+    });
+
     it("todo list filters by status", () => {
         expect(todoList.filteredTodos.length).toBe(3);
         todoList.todoStatus = "false";
