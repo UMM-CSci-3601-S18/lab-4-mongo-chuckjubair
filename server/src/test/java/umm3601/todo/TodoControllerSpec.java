@@ -112,7 +112,7 @@ public class TodoControllerSpec
     }
 
     @Test
-    public void getTodosWithStatusFalse() {
+    public void getTodosWithStatusTrue() {
         Map<String, String[]> argMap = new HashMap<>();
         argMap.put("status", new String[] { "true" });
         String jsonResult = todoController.getTodos(argMap);

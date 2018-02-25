@@ -80,6 +80,11 @@ public class TodoController {
             filterDoc = filterDoc.append("category", targetCategory);
         }
 
+        if (queryParams.containsKey("status")) {
+            String targetStatus = queryParams.get("status")[0];
+            filterDoc = filterDoc.append("status", targetStatus);
+        }
+
         if (queryParams.containsKey("owner")) {
             String targetOwner = (queryParams.get("owner")[0]);
             Document contentRegQuery = new Document();

@@ -51,14 +51,13 @@ export class TodoListComponent implements OnInit {
 
         this.filteredTodos = this.todos;
 
-        //Filter by owner
-        /*if (searchOwner != null) {
-            searchOwner = searchOwner.toLocaleLowerCase();
+        //Filter by Id
+        if (searchId != null) {
 
             this.filteredTodos = this.filteredTodos.filter(todo => {
-                return !searchOwner || todo.owner.toLowerCase().indexOf(searchOwner) !== -1;
+                return !searchId || todo._id['$oid'] === searchId;
             });
-        }*/
+        }
 
         //Filter by category
         if (searchCategory != null) {

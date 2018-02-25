@@ -94,6 +94,7 @@ describe("Todo list", () => {
             });
     });
 
+
     it("todo list filters by phrase in body", () => {
         expect(todoList.filteredTodos.length).toBe(3);
         todoList.todoBody = "sunt";
