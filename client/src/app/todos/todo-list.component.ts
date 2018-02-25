@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {MatDialog} from '@angular/material';
 import {AddTodoComponent} from "./add-todo.component"
 
+
 @Component({
     selector: 'todo-list-component',
     templateUrl: 'todo-list.component.html',
@@ -23,6 +24,8 @@ export class TodoListComponent implements OnInit {
     public todoId : string;
 
     public loadReady: boolean = false;
+
+
 
     //Inject the TodoListService into this component.
     //That's what happens in the following constructor.
@@ -49,13 +52,13 @@ export class TodoListComponent implements OnInit {
         this.filteredTodos = this.todos;
 
         //Filter by owner
-        if (searchOwner != null) {
+        /*if (searchOwner != null) {
             searchOwner = searchOwner.toLocaleLowerCase();
 
             this.filteredTodos = this.filteredTodos.filter(todo => {
                 return !searchOwner || todo.owner.toLowerCase().indexOf(searchOwner) !== -1;
             });
-        }
+        }*/
 
         //Filter by category
         if (searchCategory != null) {
@@ -119,7 +122,7 @@ export class TodoListComponent implements OnInit {
 
     loadService(): void {
         this.loadReady = true;
-        this.todoListService.getTodos(this.todoCategory).subscribe(
+        this.todoListService.getTodos(this.todoOwner).subscribe(
             todos => {
                 this.todos = todos;
                 this.filteredTodos = this.todos;
