@@ -70,16 +70,16 @@ export class TodoListComponent implements OnInit {
 
         //Filter by status
         if (searchStatus != null) {
-            let status: boolean;
 
-            if (searchStatus === "complete" || searchStatus === "true") {
+            let status: boolean;
+            if (searchStatus === "true") {
                 status = true;
-            } else if (searchStatus === "incomplete" || searchStatus === "false") {
+            } else {
                 status = false;
             }
 
             this.filteredTodos = this.filteredTodos.filter((todo: Todo) => {
-                return !searchStatus || (todo.status === Boolean(status));
+                return !searchStatus || todo.status === status;
             });
         }
 
