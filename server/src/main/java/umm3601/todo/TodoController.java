@@ -19,6 +19,7 @@ import com.mongodb.client.model.Accumulators;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.AggregateIterable;
 
+
 import static com.mongodb.client.model.Filters.eq;
 
 /**
@@ -140,35 +141,37 @@ public class TodoController {
     }
 
     public String getTodosSummary() {
-        float count = todoCollection.count();
-        float percent = 100/count;
+        float totalTodoCount = todoCollection.count();
+        float percent = 100/totalTodoCount;
 
 
 
         AggregateIterable<Document> percentTodosComplete = todoCollection.aggregate(
             Arrays.asList(
                 Aggregates.match(Filters.eq("status", true)),
-                Aggregates.group("", Accumulators.sum("percentTodosComplete", percent))
+                Aggregates.group("completeTodos", Accumulators.sum("percentComplete", percent),
+                    Accumulators.sum("nubmerOfTodos", 1))
             )
         );
 
+        AggregateIterable<Document> categoriesPercentComplete = todoCollection.aggregate(
+            Arrays.asList(
+
+                Aggregates.match(Filters.eq("status", true)),
+                Aggregates.group("$category",Accumulators.sum("percentTodosComplete", percent),
+                    Accumulators.sum("numberOfTodos", 1))
+            )
+
+        );
 
 
         AggregateIterable<Document> ownerPercentComplete = todoCollection.aggregate(
 
             Arrays.asList(
                 Aggregates.match(Filters.eq("status", true)),
-                Aggregates.group("$owner", Accumulators.sum("percentComplete", percent))
+                Aggregates.group("$owner", Accumulators.sum("percentComplete", percent),
+                    Accumulators.sum("numberOfTodos", 1))
 
-            )
-        );
-
-
-        AggregateIterable<Document> groceriesPercentComplete = todoCollection.aggregate(
-            Arrays.asList(
-                Aggregates.match(Filters.eq("status", true)),
-                Aggregates.group("$category", Accumulators.sum("count", 1),
-                    Accumulators.sum("percent", percent))
             )
         );
 
@@ -176,14 +179,34 @@ public class TodoController {
         AggregateIterable<Document> percentTodosIncomplete = todoCollection.aggregate(
             Arrays.asList(
                 Aggregates.match(Filters.eq("status", false)),
+                Aggregates.group("incompleteTodos", Accumulators.sum("percentIncomplete", percent),
+                    Accumulators.sum("nubmerOfTodos", 1))
+            )
+        );
 
-                Aggregates.group("", Accumulators.sum("percentTodosInomplete", percent))
+        AggregateIterable<Document> categoriesPercentIncomplete = todoCollection.aggregate(
+            Arrays.asList(
+
+                Aggregates.match(Filters.eq("status", false)),
+                Aggregates.group("$category",Accumulators.sum("percentTodosIncomplete", percent),
+                    Accumulators.sum("numberOfTodos", 1))
+            )
+
+        );
+
+
+        AggregateIterable<Document> ownerPercentIncomplete = todoCollection.aggregate(
+
+            Arrays.asList(
+                Aggregates.match(Filters.eq("status", true)),
+                Aggregates.group("$owner", Accumulators.sum("percentIncomplete", percent),
+                    Accumulators.sum("numberOfTodos", 1))
+
             )
         );
 
 
-
-        List pipe = Arrays.asList(percentTodosComplete, ownerPercentComplete, groceriesPercentComplete, percentTodosIncomplete);
+        List pipe = Arrays.asList(percentTodosComplete, categoriesPercentComplete, ownerPercentComplete, percentTodosIncomplete, categoriesPercentIncomplete, ownerPercentIncomplete);
 
         return JSON.serialize(pipe);
     }
