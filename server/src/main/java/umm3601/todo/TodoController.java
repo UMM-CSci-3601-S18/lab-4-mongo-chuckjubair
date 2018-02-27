@@ -110,13 +110,14 @@ public class TodoController {
      * @param Id
      * @return boolean after successfully or unsuccessfully adding a todo
      */
-    public boolean addNewTodo(String owner, String category, String body, String status, String Id) {
+    public boolean addNewTodo(String owner, String status, String category, String body, String Id) {
 
         Document newTodo = new Document();
         newTodo.append("owner", owner);
+        newTodo.append("status", status);
         newTodo.append("category", category);
         newTodo.append("body", body);
-        newTodo.append("status", status);
+
         newTodo.append("Id", Id);
 
         try {

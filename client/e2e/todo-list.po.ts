@@ -33,6 +33,13 @@ export class TodoPage {
         input.sendKeys(category);
     }
 
+    typeAStatus(status: string) {
+        const input = element(by.id('todoStatus'));
+        input.click();
+        input.sendKeys(status);
+    }
+
+
     typeAId(Id: string) {
         const input = element(by.id('todoId'));
         input.click();
@@ -64,6 +71,13 @@ export class TodoPage {
     getUniqueTodo(Id: string) {
         const todo = element(by.id(Id)).getText();
         this.highlightElement(by.id(Id));
+
+        return todo;
+    }
+
+    getUniqueOwner(owner: string) {
+        const todo = element(by.id(owner)).getText();
+        this.highlightElement(by.id(owner));
 
         return todo;
     }
