@@ -11,3 +11,20 @@
 #list-title {
     padding-right: 14px;
 }
+
+#todo-list-title {
+    font-size: 75px;
+    text-align: center;
+    font-family: "Fira Sans";
+    color: #ffffff;
+    background-image: url(http://www.intrawallpaper.com/static/images/1132931-hd-3d.jpg);
+}
+
+div{
+    background-image: url(http://www.intrawallpaper.com/static/images/1132931-hd-3d.jpg);
+
+}
+
+mat-card-content {
+    text-align: center;
+}
