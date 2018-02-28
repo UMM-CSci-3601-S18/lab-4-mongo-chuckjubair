@@ -1,14 +1,17 @@
-<div>
-    <ol>
-        <button id = "addNewTodo" mat-raised-button (click)="openDialog()">Add A New Todo</button>
-    </ol>
-</div>
+
+
 
 
 <div layout-gt-sm="row">
+
     <div flex-gt-sm="80" flex-offset-gt-sm="10">
+
         <mat-card>
+
             <mat-card-title id="todo-list-title">Todos</mat-card-title>
+            <ol>
+                <button id = "addNewTodo" mat-raised-button (click)="openDialog()">Add A New Todo</button>
+            </ol>
             <mat-divider></mat-divider>
             <mat-card-content>
                 <mat-form-field>
