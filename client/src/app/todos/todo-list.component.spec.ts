@@ -108,7 +108,7 @@ describe("Todo list", () => {
 
     it("todo list filters by status", () => {
         expect(todoList.filteredTodos.length).toBe(3);
-        todoList.todoStatus = "true";
+        todoList.todoStatus = true;
         let a : Observable<Todo[]> = todoList.refreshTodos();
         a.do(x => Observable.of(x))
             .subscribe(x =>
@@ -120,7 +120,7 @@ describe("Todo list", () => {
     it("todo list filters by category and status", () => {
         expect(todoList.filteredTodos.length).toBe(3);
         todoList.todoCategory = "software design";
-        todoList.todoStatus = "false";
+        todoList.todoStatus = false;
         let a : Observable<Todo[]> = todoList.refreshTodos();
         a.do(x => Observable.of(x))
             .subscribe(x =>

@@ -33,10 +33,19 @@ export class TodoPage {
         input.sendKeys(category);
     }
 
-    typeAStatus(status: string) {
-        const input = element(by.id('todoStatus'));
+    clickAllButton() {
+        const input = element(by.id('allButton'));
         input.click();
-        input.sendKeys(status);
+    }
+
+    clickCompleteButton() {
+        const input = element(by.id('trueButton'));
+        input.click();
+    }
+
+    clickIncompleteButton() {
+        const input = element(by.id('falseButton'));
+        input.click();
     }
 
 
