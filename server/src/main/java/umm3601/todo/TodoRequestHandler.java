@@ -83,7 +83,7 @@ public class TodoRequestHandler {
                     String owner = dbO.getString("owner");
                     //For some reason age is a string right now, caused by angular.
                     //This is a problem and should not be this way but here ya go
-                    String status = dbO.getString("status");
+                    Boolean status = Boolean.parseBoolean(dbO.getString("status"));
                     String category = dbO.getString("category");
                     String body = dbO.getString("body");
                     String Id = dbO.getString("Id");

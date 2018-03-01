@@ -52,10 +52,14 @@ describe('Todo list', () => {
     });
 
     // Need to add filtering by status when changed to select
-    it('should type something in filter by status box and check that it returned correct element', () => {
+    it('should click all, complete, and incomplete buttons to check that it returned correct element', () => {
         page.navigateTo();
-        page.typeAStatus('complete');
+        page.clickCompleteButton();
         expect(page.getUniqueTodo('58af3a600343927e48e87211')).toEqual('Fry');
+        page.clickAllButton()
+        expect(page.getUniqueTodo('58af3a600343927e48e87210')).toEqual('Fry');
+        page.clickIncompleteButton()
+        expect(page.getUniqueTodo('58af3a600343927e48e87222')).toEqual('Workman');
     });
 
     it('Should open the expansion panel and get the owner', () => {

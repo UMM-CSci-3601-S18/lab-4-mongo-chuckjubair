@@ -19,7 +19,7 @@ export class TodoListComponent implements OnInit {
     // These are the target values used in searching.
     // We should rename them to make that clearer.
     public todoOwner : string;
-    public todoStatus : string;
+    public todoStatus : boolean;
     public todoCategory : string;
     public todoBody : string;
     public todoId : string;
@@ -37,7 +37,7 @@ export class TodoListComponent implements OnInit {
     }
 
     openDialog(): void {
-        const newTodo: Todo = {_id: '', owner: '', status: null, category: '', body: '' };
+        const newTodo: Todo = {_id: '', owner: '', status: false, category: '', body: '' };
         const dialogRef = this.dialog.open(AddTodoComponent, {
             width: '500px',
             data: { todo: newTodo }
@@ -57,7 +57,7 @@ export class TodoListComponent implements OnInit {
         });
     }
 
-    public filterTodos(searchOwner: string, searchCategory: string, searchStatus: string, searchBody: string, searchId: string): Todo[] {
+    public filterTodos(searchOwner: string, searchCategory: string, searchStatus: boolean, searchBody: string, searchId: string): Todo[] {
 
         this.filteredTodos = this.todos;
 
@@ -81,16 +81,24 @@ export class TodoListComponent implements OnInit {
         //Filter by status
         if (searchStatus != null) {
 
-            let status: boolean;
-            if (searchStatus.toLowerCase() === "true" || searchStatus.toLowerCase() === "complete") {
-                status = true;
-            } else if (searchStatus.toLowerCase() === "false" || searchStatus.toLowerCase() === "incomplete"){
-                status = false;
+            let a : boolean;
+
+            if (String(searchStatus) === "true") {
+                a = true;
+            } else if (String(searchStatus) === "false") {
+                a = false;
+            } else {
+                a = null;
             }
 
-            this.filteredTodos = this.filteredTodos.filter((todo: Todo) => {
-                return !searchStatus || todo.status === status;
-            });
+            if (a === null) {
+
+            } else {
+                this.filteredTodos = this.filteredTodos.filter((todo: Todo) => {
+                    return todo.status === a;
+                });
+            }
+
         }
 
         //Filter by phrase in body

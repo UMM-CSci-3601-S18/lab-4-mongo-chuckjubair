@@ -21,9 +21,6 @@
                     <input matInput id="todoCategory" #input type="text" placeholder="Filter by category" (input)="todoCategory = $event.target.value">
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput id="todoStatus" #input type="text" placeholder="Filter by status" (input)="todoStatus = $event.target.value">
-                </mat-form-field>
-                <mat-form-field>
                     <input matInput id="todoBody" #input type="text" placeholder="Filter by body" (input)="todoBody = $event.target.value">
                 </mat-form-field>
                 <mat-form-field>
@@ -33,6 +30,15 @@
                     </button>
                 </mat-form-field>
                 <button mat-raised-button id="submit" color="primary" #input type="button" (click)="loadService()">Submit</button>
+
+                <br />
+
+                <mat-radio-group matInput id="todoStatus" #input [(ngModel)]="todoStatus" (input)="todoStatus = $event.target.value">
+                    <mat-radio-button id="allButton" value="all">All</mat-radio-button>
+                    <mat-radio-button id="trueButton" value="true">Complete</mat-radio-button>
+                    <mat-radio-button id="falseButton" value="false">Incomplete</mat-radio-button>
+                </mat-radio-group>
+
 
                 <mat-accordion *ngIf="todos; else todosError" >
                     <mat-expansion-panel #elem class="todos" [id]="todo._id['$oid']" *ngFor="let todo of this.filterTodos(todoOwner, todoCategory, todoStatus, todoBody, todoId)">
